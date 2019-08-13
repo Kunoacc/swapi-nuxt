@@ -1,10 +1,14 @@
-import {
-  api as httpApi
-} from '../api'
+import { api as httpApi } from '../api'
 
 export default function ({
   config
 }, inject) {
-  const api = httpApi()
+  const getData = url => fetch(`https://swapi.co/api/${url}`, {
+    credentials: 'omit',
+    method: 'GET',
+    // mode: 'no-cors',
+    cache: 'no-cache'
+  })
+  const api = httpApi(getData)
   inject('api', api)
 }
