@@ -1,39 +1,63 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        strapi-vue
-      </h1>
-      <h2 class="subtitle">
-        A Nuxt application that interfaces with the strapi api to perform basic SPA features
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <div>
+    <div class="w-full relative z-0">
+      <div class="absolute h-full w-full justify-center text-white flex items-center z-10 flex-col">
+        <h1 class="font-bold text-2xl mt-5">Star Wars Directory</h1>
+        <p class="w-1/2 md:w1/3 lg:w-3/12 text-center my-8">
+          Find your favourite characters, films, spaceships, planets all on the star wars directory. Begin with a simple search.
+        </p>
+        <input
+        type="text"
+        class="py-2 px-4 mb-10 w-2/3 md:w-1/3 text-gray-800 focus:border-black focus:outline-none focus:shadow-md"
+        placeholder="Enter search query here">
+      </div>
+      <div class="absolute h-full w-full bg-black opacity-50" />
+      <img src="~/assets/images/background.jpg" class="h-half w-full object-cover" alt>
+    </div>
+    <div class="container">
+      <div class="px-4">
+        <div class="flex flex-wrap -mx-4 mt-4">
+        <!-- <PlanetCard class="px-2"></PlanetCard> -->
+        <!-- <StarshipCard class="px-4 w-1/2 my-4"></StarshipCard> -->
+        <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
+        <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
+        <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
+        <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
+      </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+import PlanetCard from "~/components/PlanetCard.vue";
+import StarshipCard from "~/components/StarshipCard.vue";
+import CharacterCard from "~/components/CharacterCard.vue";
 export default {
+  data: function () {
+    return {
+    isLoading: false,
+    planets: [],
+    starships: [],
+    characters: [],
+    user: {
+      "name": "Luke Skywalker",
+      "height": "172",
+      "mass": "77",
+      "hair_color": "blond",
+      "skin_color": "fair",
+      "eye_color": "blue",
+      "birth_year": "19BBY",
+      "gender": "male",
+    }
+    }
+  },
+  mounted: function () {
+    this.isLoading = true;
+
+  },
   components: {
-    Logo
+    PlanetCard, StarshipCard, CharacterCard
   }
 }
 </script>
@@ -44,34 +68,24 @@ export default {
   @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
+
+.h-half {
+  height: calc(100vh / 1.5);
+  min-height: 500px;
+}
+
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  @apply flex justify-center items-center text-center mx-auto;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.btn {
+  transition: all 0.2s ease;
+  @apply bg-blue-300 flex rounded-sm border-0 px-4 py-2 shadow;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.btn:hover {
+  transition: all 0.2s ease;
+  transform: scale(1, 1);
+  @apply bg-blue-500 shadow-md;
 }
 </style>
