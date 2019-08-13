@@ -12,15 +12,19 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "lodash.foreach": "^4.5.0",
     "nuxt": "^2.0.0",
-    "@nuxtjs/axios": "^5.3.6"
+    "vue-content-loader": "^0.2.2"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^1.0.0",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
+    "@nuxtjs/tailwindcss": "^1.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.1.0",
-    "eslint-plugin-nuxt": ">=0.4.2"
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.2.0"
   }
 }
