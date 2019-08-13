@@ -1,9 +1,12 @@
 import { starshipsApi } from './starships'
 import { PlanetsApi } from './planets'
-import { charactersApi } from './characters'
+import { peopleApi } from './people'
 
-export const api = () => ({
-  ...starshipsApi(),
-  ...PlanetsApi(),
-  ...charactersApi()
+export const api = getData => ({
+  ...starshipsApi(getData),
+  ...PlanetsApi(getData),
+  ...peopleApi(getData),
+  async search () {
+
+  }
 })
