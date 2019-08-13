@@ -23,6 +23,7 @@
         <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
         <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
         <character-card class="px-4 w-1/3 my-4" :user="user"></character-card>
+        <starship-loader class="px-4 w-1/3 my-4"></starship-loader>
       </div>
       </div>
     </div>
@@ -30,9 +31,6 @@
 </template>
 
 <script>
-import PlanetCard from "~/components/PlanetCard.vue";
-import StarshipCard from "~/components/StarshipCard.vue";
-import CharacterCard from "~/components/CharacterCard.vue";
 export default {
   data: function () {
     return {
@@ -56,9 +54,6 @@ export default {
     this.isLoading = true;
 
   },
-  components: {
-    PlanetCard, StarshipCard, CharacterCard
-  }
 }
 </script>
 
@@ -68,24 +63,4 @@ export default {
   @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
-
-.h-half {
-  height: calc(100vh / 1.5);
-  min-height: 500px;
-}
-
-.container {
-  @apply flex justify-center items-center text-center mx-auto;
-}
-
-.btn {
-  transition: all 0.2s ease;
-  @apply bg-blue-300 flex rounded-sm border-0 px-4 py-2 shadow;
-}
-
-.btn:hover {
-  transition: all 0.2s ease;
-  transform: scale(1, 1);
-  @apply bg-blue-500 shadow-md;
-}
 </style>

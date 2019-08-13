@@ -23,6 +23,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+    #card::before{
+        background-image: url('../assets/images/user-bg.jpg');
+    }
 </style>
