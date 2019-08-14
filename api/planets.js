@@ -1,8 +1,8 @@
-export const PlanetsApi = () => ({
+export const PlanetsApi = getData => ({
   async getPlanet (id) {
     try {
-      const response = await fetch(`swapi.co/api/planets/${id}/`)
-      if (response.ok) {
+      const response = await getData(`planets/${id}/`)
+      if (response.ok && response.status == 200) {
         return await response.json()
       }
       throw new Error(response.statusText)
@@ -13,8 +13,20 @@ export const PlanetsApi = () => ({
 
   async getPlanets () {
     try {
-      const response = await fetch(`swapi.co/api/planets/`)
-      if (response.ok) {
+      const response = await getData(`planets/`)
+      if (response.ok && response.status == 200) {
+        return await response.json()
+      }
+      throw new Error(response.statusText)
+    } catch (error) {
+      return error
+    }
+  },
+
+  async searchPlanets(query) {
+    try {
+      const response = await getData(`planets/?search=${encodeURI(query)}`)
+      if (response.ok && response.status == 200) {
         return await response.json()
       }
       throw new Error(response.statusText)
