@@ -1,10 +1,10 @@
 <template>
-  <nav class="flex items-center justify-between lg:justify-around flex-wrap bg-blue-500 p-6 fixed w-full opacity-75 z-10">
+  <nav class="flex items-center justify-between lg:justify-around flex-wrap bg-blue-500 p-6 fixed w-full z-10">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
       <!-- <span class="font-semibold text-xl tracking-tight">Star Wars</span> -->
-      <span class="font-semibold text-xl tracking-tight">
+      <nuxt-link to="/">
         <img src="~/assets/images/logo.png" class="w-auto h-8" alt="">
-      </span>
+      </nuxt-link>
     </div>
     <div class="block lg:hidden">
       <button
@@ -19,15 +19,18 @@
     </div>
     <div id="menu" class="w-full block sm:flex-grow lg:flex-grow-0 ml-auto lg:flex lg:items-center lg:w-auto hidden">
       <div class="text-sm lg:flex-grow">
-        <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-gray-200 hover:text-white mr-4">
+        <nuxt-link to="/characters"
+        :class="['block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4', $route.path == '/characters' ? 'text-white' : 'text-black']">
           Characters
-        </a>
-        <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-gray-200 hover:text-white mr-4">
+        </nuxt-link>
+        <nuxt-link to="/starships"
+        :class="['block mt-4 lg:inline-block lg:mt-0 hover:text-white mr-4', $route.path == '/starships' ? 'text-white' : 'text-black']">
           Starships
-        </a>
-        <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-gray-200 hover:text-white">
+        </nuxt-link>
+        <nuxt-link to="/planets"
+        :class="['block mt-4 lg:inline-block lg:mt-0 hover:text-white', $route.path == '/planets' ? 'text-white' : 'text-black']">
           Planets
-        </a>
+        </nuxt-link>
       </div>
     </div>
   </nav>
@@ -44,6 +47,8 @@ export default {
 
 </script>
 
-<style>
-
+<style scoped>
+nav{
+  opacity: .85;
+}
 </style>
