@@ -1,30 +1,39 @@
 <template>
-    <div>
-        <div class="shadow-lg rounded relative bg-white overflow-hidden flex flex-col" id="card">
-        <div class="w-1/2 mx-auto">
-            <img src="~/assets/images/starships/1.png" alt="" srcset="">
+  <base-card>
+    <nuxt-link to="/">
+      <div :id="`card-${rand}`" class="shadow-md rounded relative bg-white overflow-hidden flex flex-col card hover:shadow-xl">
+        <div class="w-1/2 mx-auto pt-8">
+          <img :src="imageUrl" alt="" srcset="">
         </div>
-        <div class="w-1/2 text-left py-4 px-8 pb-8">
-            <div class="mb-4">
-                <h2 class="text-2xl font-bold mb-0">Nelson Atuonwu</h2>
-                <span>Male</span>
-            </div>
-            <p><b>Birth Year:</b> 1333</p>
-            <p><b>Hair Color:</b> Brown</p>
-            <p><b>Skin Color:</b> Fair</p>
+        <div class="w-full text-left py-4 px-8 pb-8">
+          <div class="mb-4">
+            <h2 class="text-2xl font-bold mb-0">
+              {{starship.name}}
+            </h2>
+            <span>{{starship.model}}</span>
+          </div>
+          <p><b>Passengers:</b> {{$numberFormat(starship.passengers)}}</p>
+          <p><b>Crew:</b> {{$numberFormat(starship.crew)}}</p>
+          <p><b>Starship Class:</b> {{starship.starship_class}}</p>
         </div>
-    </div>
-    </div>
+      </div>
+    </nuxt-link>
+  </base-card>
 </template>
 
 <script>
 export default {
-
+  props: ['imageUrl', 'starship'],
+  computed: {
+    rand () {
+      return this.$randNum(1, 1000)
+    }
+  },
+  mounted () {
+    this.$applyCSS(this.imageUrl, this, this.rand)
+  },
+  beforeUpdate () {
+    this.$applyCSS(this.imageUrl, this, this.rand)
+  }
 }
 </script>
-
-<style lang="scss" scoped>
-    #card::before{
-        background-image: url('../assets/images/user-bg.jpg');
-    }
-</style>
