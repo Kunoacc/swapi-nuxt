@@ -31,7 +31,31 @@ body * {
   font-family: "DM Sans", sans-serif !important;
 }
 
-#card{
+.section-title{
+  position: relative;
+  width: fit-content;
+}
+
+.section-title::before{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 40%;
+  height: 4px;
+  border-radius: 2px;
+  @apply bg-blue-500;
+}
+
+.home-section{
+  @apply px-4 my-5 w-full;
+}
+
+.row{
+  @apply flex flex-wrap -mx-4 mt-4 w-full;
+}
+
+.card{
     z-index: 1;
 
     &::before{
@@ -40,8 +64,8 @@ body * {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url('../assets/images/user-bg.jpg');
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center center;
     opacity: .15;
     top: 0;
@@ -55,7 +79,7 @@ body * {
 }
 
 .container {
-  @apply flex justify-center items-center text-center mx-auto;
+  @apply flex justify-center items-center text-center mx-auto flex-col flex-grow;
 }
 
 .btn {
