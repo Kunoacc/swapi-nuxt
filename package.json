@@ -13,9 +13,10 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "lodash": "^4.17.15",
     "lodash.foreach": "^4.5.0",
     "nuxt": "^2.0.0",
-    "vue-content-loader": "^0.2.2"
+    "vue-content-loader": "kunoacc/vue-content-loader#master"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
