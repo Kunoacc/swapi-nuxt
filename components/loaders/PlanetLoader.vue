@@ -1,22 +1,17 @@
-
-
 <script>
-  import { ContentLoader } from "vue-content-loader"
+  import ContentLoader from "./ContentLoader";
 
   export default {
     components: {
       ContentLoader
     }
   }
+
 </script>
 <template>
-  <content-loader
-    :height="475"
-    :width="600"
-    :speed="2"
-    primaryColor="#f5f5f5"
-    secondaryColor="#ecebeb"
-  >
-    <rect x="12" y="68" rx="5" ry="5" width="292" height="272" />
-  </content-loader>
+  <base-loader>
+    <content-loader :height="'100%'" :width="'100%'" :speed="2" primary-color="#ffffff" secondary-color="#f5f5f5">
+      <rect x="12" y="0" rx="5" ry="5" width="350" height="272" />
+    </content-loader>
+  </base-loader>
 </template>
