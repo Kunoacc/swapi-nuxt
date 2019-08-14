@@ -30,7 +30,8 @@ export default {
   plugins: [
     '~/plugins/api.js',
     '~/plugins/global-components.js',
-    '~/plugins/global-loaders.js'
+    '~/plugins/global-loaders.js',
+    '~/plugins/utilities.js',
   ],
   /*
   ** Nuxt.js dev-modules
