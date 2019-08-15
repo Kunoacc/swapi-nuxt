@@ -1,6 +1,6 @@
 <template>
     <base-card>
-        <nuxt-link to="/">
+        <nuxt-link :to="`${planet.name.toLowerCase().replace(/ /g, '-')}`">
             <div class="shadow-md rounded relative bg-white overflow-hidden flex flex-col hover:shadow-xl">
                 <div class="m-4 relative">
                     <div class="dark-gradient-cover flex flex-col justify-end pb-10 text-white">
