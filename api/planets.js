@@ -3,7 +3,8 @@ export const PlanetsApi = getData => ({
     try {
       const response = await getData(`planets/${id}/`)
       if (response.ok && response.status == 200) {
-        return await response.json()
+        let data = await response.json()
+        return {'url': response.url, ...data}
       }
       throw new Error(response.statusText)
     } catch (error) {
@@ -15,7 +16,8 @@ export const PlanetsApi = getData => ({
     try {
       const response = await getData(`planets/`)
       if (response.ok && response.status == 200) {
-        return await response.json()
+        let data = await response.json()
+        return {'url': response.url, ...data}
       }
       throw new Error(response.statusText)
     } catch (error) {
@@ -27,7 +29,8 @@ export const PlanetsApi = getData => ({
     try {
       const response = await getData(`planets/?search=${encodeURI(query)}`)
       if (response.ok && response.status == 200) {
-        return await response.json()
+        let data = await response.json()
+        return {'url': response.url, ...data}
       }
       throw new Error(response.statusText)
     } catch (error) {
