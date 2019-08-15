@@ -52,7 +52,7 @@ body * {
 }
 
 .row{
-  @apply flex flex-wrap -mx-4 mt-4 w-full;
+  @apply flex flex-wrap mt-4 w-full;
 }
 
 .card{
