@@ -1,7 +1,8 @@
 <template>
-  <base-card>
+  <base-card :is-carousel="isCarousel">
     <nuxt-link :to="`starships/${starship.name.toLowerCase().replace(/ /g, '-')}`">
-      <div :id="`card-${rand}`" class="shadow-md rounded relative bg-white overflow-hidden flex flex-col card hover:shadow-xl">
+      <div :id="`card-${rand}`"
+        class="shadow-md rounded relative bg-white overflow-hidden flex flex-col card hover:shadow-xl">
         <div class="w-1/2 mx-auto pt-8">
           <img :src="imageUrl" alt="" srcset="">
         </div>
@@ -22,18 +23,30 @@
 </template>
 
 <script>
-export default {
-  props: ['imageUrl', 'starship'],
-  computed: {
-    rand () {
-      return this.$randNum(1, 1000)
+  export default {
+    props: {
+      starship: {
+        type: Object,
+      },
+      imageUrl: {
+        type: String
+      },
+      isCarousel: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      rand() {
+        return this.$randNum(1, 1000)
+      }
+    },
+    mounted() {
+      this.$applyCSS(this.imageUrl, this, this.rand)
+    },
+    beforeUpdate() {
+      this.$applyCSS(this.imageUrl, this, this.rand)
     }
-  },
-  mounted () {
-    this.$applyCSS(this.imageUrl, this, this.rand)
-  },
-  beforeUpdate () {
-    this.$applyCSS(this.imageUrl, this, this.rand)
   }
-}
+
 </script>

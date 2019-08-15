@@ -5,7 +5,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Star Wars Directory',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -32,6 +32,7 @@ export default {
     '~/plugins/global-components.js',
     '~/plugins/global-loaders.js',
     '~/plugins/utilities.js',
+    '~/plugins/carousel.js',
   ],
   /*
   ** Nuxt.js dev-modules

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-8">
     <div class="w-full relative z-0">
       <div class="absolute h-full w-full justify-center text-white flex items-center z-10 flex-col">
         <h1 class="font-bold text-4xl mt-5">
@@ -12,7 +12,7 @@
       <div class="absolute h-full w-full bg-black opacity-50" />
       <img src="~/assets/images/background.jpg" class="h-half w-full object-cover" alt>
     </div>
-    <div class="container">
+    <div class="container" v-if="!loadingError">
       <div class="home-section">
         <!-- CHARACTERS -->
         <h2 class="text-3xl font-semibold section-title pb-2">
@@ -40,8 +40,11 @@
           <starship-loader class="hidden md:block"/>
         </div>
         <div class="row items-stretch" v-else>
-          <starship-card :image-url="$assetImage('starships', 1, 6)"
-          v-for="(starship, index) in starships" :starship="starship" :key="index"/>
+          <carousel :per-page="1" class="w-full" :per-page-custom="[[640,1], [768, 2], [1024, 3]]">
+            <slide v-for="(starship, index) in starships" :key="index">
+              <starship-card :image-url="$assetImage('starships', 1, 6)" :starship="starship" class="w-full" :is-carousel="true"/>
+            </slide>
+          </carousel>
         </div>
       </div>
 
@@ -55,10 +58,20 @@
           <planet-loader class="hidden md:block"/>
           <planet-loader class="hidden md:block"/>
         </div>
-        <div class="row items-stretch flex-1" v-else>
-          <planet-card :image-url="$assetImage('planets', 1, 3, 'jpg')"
-          v-for="(planet, index) in planets" :planet="planet" :key="index"/>
+        <div class="row items-stretch" v-else>
+          <carousel :per-page="1" class="w-full" :per-page-custom="[[640,1], [768, 2], [1024, 3]]">
+            <slide v-for="(planet, index) in planets" :key="index">
+              <planet-card :planet="planet" :image-url="$assetImage('planets', 1, 3, 'jpg')" :is-carousel="true" />
+            </slide>
+          </carousel>
         </div>
+      </div>
+    </div>
+    <div class="container" v-else>
+      <div class="home-section py-40">
+        <h3 class="font-semibold text-3xl text-gray-600">
+          {{errorMessage}}
+        </h3>
       </div>
     </div>
   </div>
@@ -89,14 +102,15 @@
           console.log(characters.results)
           console.log(starships.results)
           console.log(planets.results)
-          characters.results.length = 3
-          planets.results.length = 3
-          starships.results.length = 3
+          characters.results.length = 6
+          planets.results.length = 6
+          starships.results.length = 6
           this.characters = characters.results
           this.planets = planets.results
           this.starships = starships.results
         } catch(e){
-          throw new Error(e.message)
+          this.loadingError = true
+          this.errorMessage = 'Something went wrong, please try again'
         }
       }
     }

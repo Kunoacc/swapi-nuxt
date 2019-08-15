@@ -6,7 +6,8 @@
           Planets
         </h1>
         <p class="w-1/2 md:w1/3 lg:w-3/12 text-center my-8">
-          Get started by searching for your favourite planets on the star wars directory. Begin by typing into the text box.
+          Get started by searching for your favourite planets on the star wars directory. Begin by typing into the text
+          box.
         </p>
         <input type="text"
           class="py-2 px-4 mb-10 w-2/3 md:w-1/3 text-gray-800 focus:border-black focus:outline-none focus:shadow-md"
@@ -29,8 +30,8 @@
           <planet-loader class="hidden md:block" />
         </div>
         <div class="row items-stretch pb-8" v-if="planets.length > 0 && !isLoading">
-          <planet-card v-for="(planet, index) in planets"
-          :planet="planet" :image-url="$assetImage('planets', 1, 3, 'jpg')" :key="index" />
+          <planet-card v-for="(planet, index) in planets" :planet="planet"
+            :image-url="$assetImage('planets', 1, 3, 'jpg')" :key="index" />
         </div>
         <div class="row pb-8" v-if="!isLoading && planets.length == 0">
           <div class="w-full h-64 flex justify-center items-center">
@@ -41,31 +42,40 @@
         </div>
       </div>
       <div class="home-section justify-center pb-16" v-if="planets.length > 0 && !isLoading && planets.length >= 10">
-        <pagination :total-items="totalPlanets" :current-page="currentPage" :url="apiUrl" @change-page="updatePage"></pagination>
+        <pagination :total-items="totalPlanets" :current-page="currentPage" :url="apiUrl" @change-page="updatePage">
+        </pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { debounce } from "lodash";
+  import {
+    debounce
+  } from "lodash";
   export default {
-    async asyncData({query}){
+    async asyncData({
+      query
+    }) {
       console.log(query)
       let currentPage;
       let searchTerm;
       if (query.page) {
         currentPage = parseInt(query.page)
-      } else {currentPage = 1}
+      } else {
+        currentPage = 1
+      }
       if (query.search) {
         searchTerm = query.search
-      } else { searchTerm = ""}
+      } else {
+        searchTerm = ""
+      }
       return {
         currentPage: currentPage,
         searchTerm: searchTerm
       }
     },
-    data(){
+    data() {
       return {
         planets: [],
         isLoading: false,
@@ -73,7 +83,7 @@ import { debounce } from "lodash";
         apiUrl: ''
       }
     },
-    async mounted(){
+    async mounted() {
       let planets
       this.isLoading = true
       await this.updateData(this.searchTerm, this.currentPage)
@@ -83,7 +93,7 @@ import { debounce } from "lodash";
       this.isLoading = false
     },
     methods: {
-      async updateData(value, currentPage = 1){
+      async updateData(value, currentPage = 1) {
         let planets
         if (value) {
           planets = await this.$api.searchPlanets(value)
@@ -96,14 +106,23 @@ import { debounce } from "lodash";
         this.currentPage = currentPage
         this.$route.query.page = currentPage
       },
-      debouncedData: debounce(function (value){
-          this.updateData(value).then(() => {
-            this.isLoading = false
-          })
-        }, 500),
-      async updatePage({url, value}){
+      debouncedData: debounce(function (value) {
+        this.updateData(value).then(() => {
+          this.isLoading = false
+        })
+      }, 500),
+      async updatePage({
+        url,
+        value
+      }) {
         this.isLoading = true
-        this.$router.push({path: this.$route.path, query: {page: url[url.length-1], search: this.$route.query.search}}).catch(err => {})
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            page: url[url.length - 1],
+            search: this.$route.query.search
+          }
+        }).catch(err => {})
         let planets = await this.$api.get(url)
         this.planets = planets.results
         this.totalPlanets = planets.count
@@ -115,11 +134,18 @@ import { debounce } from "lodash";
     watchQuery: true,
     scrollToTop: false,
     watch: {
-      searchTerm(val){
+      searchTerm(val) {
         this.isLoading = true
-        this.$router.push({path: this.$route.path, query: {page: 1, search: val}})
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            page: 1,
+            search: val
+          }
+        })
         this.debouncedData(val)
       }
     }
   }
+
 </script>

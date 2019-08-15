@@ -1,5 +1,5 @@
 <template>
-  <base-card>
+  <base-card :is-carousel="isCarousel">
     <nuxt-link :to="{ path: `/characters/${user.name.toLowerCase().replace(/ /g, '-')}`}">
       <div :id="`card-${rand}`"
       class="shadow-md rounded relative bg-white overflow-hidden flex flex-row items-center card hover:shadow-xl">
@@ -25,7 +25,18 @@
 
 <script>
 export default {
-  props: [ 'user','imageUrl'],
+  props:{
+    user: {
+      type: Object,
+    },
+    imageUrl: {
+      type: String
+    },
+    isCarousel: {
+      type: Boolean,
+      default: false
+    }
+  },
   data(){
     return {
     }

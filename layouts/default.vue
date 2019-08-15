@@ -2,16 +2,13 @@
   <div class="bg-gray-300">
     <Navbar />
     <nuxt />
+    <Footer />
   </div>
 </template>
 
 <script>
-import Navbar from '../components/Navbar'
 
 export default {
-  components: {
-    Navbar
-  },
   mounted () {
     this.get()
   },
@@ -52,6 +49,7 @@ body * {
 }
 
 .row{
+
   @apply flex flex-wrap mt-4 w-full;
 }
 

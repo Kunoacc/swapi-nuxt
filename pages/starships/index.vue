@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="home-section justify-center pb-16" v-if="starships.length > 0 && !isLoading && totalStarships > 10">
-        <pagination :total-items="totalStarships" :current-page="currentPage"></pagination>
+        <pagination :total-items="totalStarships" :current-page="currentPage" :url="apiUrl" @change-page="updatePage"></pagination>
       </div>
     </div>
   </div>
@@ -92,7 +92,7 @@ import { debounce } from "lodash";
         }
         this.starships = starships.results
         this.totalStarships = starships.count
-        this.apiUrl = planets.url
+        this.apiUrl = starships.url
         this.currentPage = currentPage
         this.$route.query.page = currentPage
       },

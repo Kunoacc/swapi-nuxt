@@ -16,6 +16,7 @@
     "lodash": "^4.17.15",
     "lodash.foreach": "^4.5.0",
     "nuxt": "^2.0.0",
+    "vue-carousel": "^0.18.0",
     "vue-content-loader": "kunoacc/vue-content-loader#master"
   },
   "devDependencies": {
