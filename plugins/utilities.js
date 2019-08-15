@@ -43,10 +43,22 @@ export default function ({ config }, inject) {
     const length = Math.floor(Math.abs((stop - start) / step)) + 1;
     return Array.from(Array(length), (x, index) => start + index * step);
   }
+  const urlify = (url, value) => {
+    if(url.match('page=')){
+        let tempUrl = url.split('page=')
+        console.log(tempUrl)
+        tempUrl[1].length > 1 ? tempUrl[1][0] = value : tempUrl[1] = value
+        return {url:`${tempUrl[0]}page=${tempUrl[1]}`, value: value}
+    } else if (url.match('search=')) {
+        return {url:`${url}&page=${value}`, value: value}
+    }
+    return {url:`${url}?page=${value}`, value: value}
+  }
 
   inject('randNum', randNum)
   inject('assetImage', assetImage)
   inject('applyCSS', applyCss)
   inject('numberFormat', numberFormat)
   inject('range', range)
+  inject('urlify', urlify)
 }
