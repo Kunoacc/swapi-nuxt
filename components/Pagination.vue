@@ -3,14 +3,14 @@
         <div class="pagination">
             <button v-for="val in iterations" :key="val"
             :class="{'active': currentPage == val}" :disabled="currentPage == val"
-            @click="$emit('changePage', val)">{{val}}</button>
+            @click="$emit('change-page', $urlify(url, val))">{{val}}</button>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['totalItems', 'currentPage', 'searchTerm'],
+    props: ['totalItems', 'currentPage', 'url'],
     mounted(){
         this.getIterations()
     },
@@ -23,12 +23,7 @@ export default {
         getIterations(){
             let perPage = 10
             let iterations = this.totalItems / perPage
-            this.iterations = this.$range(1, Math.floor(iterations))
-        },
-        urlify(value){
-            if(this.searchTerm){
-
-            }
+            this.iterations = this.$range(1, Math.ceil(iterations))
         }
     }
 }
