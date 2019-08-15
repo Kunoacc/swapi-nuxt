@@ -20,9 +20,17 @@
 
       </div>
       <div class="home-section">
-        <h2 class="text-3xl font-semibold section-title pb-2">
-          {{searchTerm ? `"${searchTerm}" - Search Results` : 'Characters'}}
-        </h2>
+        <div class="w-full flex justify-between px-4">
+          <h2 class="text-3xl font-semibold section-title pb-2">
+            {{searchTerm ? `"${searchTerm}" - Search Results` : 'Characters'}}
+          </h2>
+          <select class="w-2/4 md:w-1/3 lg:w-1/4 px-4" v-model="filter">
+            <option value="" selected disabled>Select gender to filter</option>
+            <option value="all">All</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
         <div class="row" v-if="isLoading">
           <character-loader />
           <character-loader class="hidden md:block" />
@@ -41,7 +49,7 @@
         </div>
       </div>
       <div class="home-section justify-center pb-16" v-if="characters.length > 0 && !isLoading && totalPeople > 10">
-        <pagination :total-items="totalPeople" :current-page="currentPage"></pagination>
+        <pagination :total-items="totalPeople" :current-page="currentPage" :url="apiUrl" @change-page="updatePage"></pagination>
       </div>
     </div>
   </div>
@@ -50,12 +58,13 @@
 <script>
 import { debounce } from "lodash";
   export default {
+    name: 'characters',
     async asyncData({query}){
       console.log(query)
       let currentPage;
       let searchTerm;
       if (query.page) {
-        currentPage = query.page
+        currentPage = parseInt(query.page)
       } else {currentPage = 1}
       if (query.search) {
         searchTerm = query.search
@@ -69,17 +78,23 @@ import { debounce } from "lodash";
       return {
         characters: [],
         isLoading: false,
-        totalPeople: 0
+        totalPeople: 0,
+        apiUrl: '',
+        charactersCopy: [],
+        filter: ''
       }
     },
     async mounted(){
       let people
       this.isLoading = true
-      await this.updateData(this.searchTerm)
+      await this.updateData(this.searchTerm, this.currentPage)
+      if (this.currentPage > 1) {
+        await this.updatePage(this.$urlify(this.apiUrl, this.currentPage))
+      }
       this.isLoading = false
     },
     methods: {
-      async updateData(value){
+      async updateData(value, currentPage = 1){
         let people
         if (value) {
           people = await this.$api.searchPeople(value)
@@ -88,19 +103,46 @@ import { debounce } from "lodash";
         }
         this.characters = people.results
         this.totalPeople = people.count
+        this.apiUrl = people.url
+        this.currentPage = currentPage
+        this.$route.query.page = currentPage
+        this.filter = ''
       },
       debouncedData: debounce(function (value){
+        const self = this
           this.updateData(value).then(() => {
+            this.$forceUpdate()
             this.isLoading = false
           })
-        }, 500)
+        }, 500),
+      async updatePage({url, value}){
+        this.isLoading = true
+        this.$router.push({path: this.$route.path, query: {page: url[url.length-1], search: this.$route.query.search}}).catch(err => {})
+        let people = await this.$api.get(url)
+        this.characters = people.results
+        this.totalPeople = people.count
+        this.apiUrl = people.url
+        this.currentPage = value
+        this.filter = ''
+        this.$forceUpdate()
+        this.isLoading = false
+      }
     },
     watchQuery: true,
+    scrollToTop: false,
     watch: {
       searchTerm(val){
         this.isLoading = true
-        this.$router.push({path: this.$route.path, query: {search: val}})
+        this.$router.push({path: this.$route.path, query: {page: 1, search: val}})
         this.debouncedData(val)
+      },
+      filter(val, oldVal){
+        this.isLoading = true
+        if (!oldVal || !val) {
+          this.charactersCopy = this.characters
+        }
+        this.characters = val == "all" ? this.charactersCopy : this.charactersCopy.filter(x => x.gender == val)
+        this.isLoading = false
       }
     }
   }

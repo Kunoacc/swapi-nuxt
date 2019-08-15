@@ -55,7 +55,7 @@ import { debounce } from "lodash";
       let currentPage;
       let searchTerm;
       if (query.page) {
-        currentPage = query.page
+        currentPage = parseInt(query.page)
       } else {currentPage = 1}
       if (query.search) {
         searchTerm = query.search
@@ -69,17 +69,21 @@ import { debounce } from "lodash";
       return {
         starships: [],
         isLoading: false,
-        totalStarships: 0
+        totalStarships: 0,
+        apiUrl: ''
       }
     },
     async mounted(){
       let people
       this.isLoading = true
-      await this.updateData(this.searchTerm)
+      await this.updateData(this.searchTerm, this.currentPage)
+      if (this.currentPage > 1) {
+        await this.updatePage(this.$urlify(this.apiUrl, this.currentPage))
+      }
       this.isLoading = false
     },
     methods: {
-      async updateData(value){
+      async updateData(value, currentPage = 1){
         let starships
         if (value) {
           starships = await this.$api.searchStarships(value)
@@ -88,20 +92,32 @@ import { debounce } from "lodash";
         }
         this.starships = starships.results
         this.totalStarships = starships.count
+        this.apiUrl = planets.url
+        this.currentPage = currentPage
+        this.$route.query.page = currentPage
       },
       debouncedData: debounce(async function (value){
-        const self = this
         this.updateData(value).then(() => {
             this.isLoading = false
         })
-
-        }, 500)
+        }, 500),
+      async updatePage({url, value}){
+        this.isLoading = true
+        this.$router.push({path: this.$route.path, query: {page: url[url.length-1], search: this.$route.query.search}}).catch(err => {})
+        let starships = await this.$api.get(url)
+        this.starships = starships.results
+        this.totalStarships = starships.count
+        this.apiUrl = starships.url
+        this.currentPage = value
+        this.isLoading = false
+      }
     },
     watchQuery: true,
+    scrollToTop: false,
     watch: {
       searchTerm(val){
         this.isLoading = true
-        this.$router.push({path: this.$route.path, query: {search: val}})
+        this.$router.push({path: this.$route.path, query: {page: 1, search: val}})
         this.debouncedData(val)
       },
     }

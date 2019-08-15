@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="home-section justify-center pb-16" v-if="planets.length > 0 && !isLoading && planets.length >= 10">
-        <pagination :total-items="totalPlanets" :currentPage="currentPage"></pagination>
+        <pagination :total-items="totalPlanets" :current-page="currentPage" :url="apiUrl" @change-page="updatePage"></pagination>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@ import { debounce } from "lodash";
       let currentPage;
       let searchTerm;
       if (query.page) {
-        currentPage = query.page
+        currentPage = parseInt(query.page)
       } else {currentPage = 1}
       if (query.search) {
         searchTerm = query.search
@@ -69,17 +69,21 @@ import { debounce } from "lodash";
       return {
         planets: [],
         isLoading: false,
-        totalPlanets: 0
+        totalPlanets: 0,
+        apiUrl: ''
       }
     },
     async mounted(){
       let planets
       this.isLoading = true
-      await this.updateData(this.searchTerm)
+      await this.updateData(this.searchTerm, this.currentPage)
+      if (this.currentPage > 1) {
+        await this.updatePage(this.$urlify(this.apiUrl, this.currentPage))
+      }
       this.isLoading = false
     },
     methods: {
-      async updateData(value){
+      async updateData(value, currentPage = 1){
         let planets
         if (value) {
           planets = await this.$api.searchPlanets(value)
@@ -88,18 +92,32 @@ import { debounce } from "lodash";
         }
         this.planets = planets.results
         this.totalPlanets = planets.count
+        this.apiUrl = planets.url
+        this.currentPage = currentPage
+        this.$route.query.page = currentPage
       },
       debouncedData: debounce(function (value){
           this.updateData(value).then(() => {
             this.isLoading = false
           })
-        }, 500)
+        }, 500),
+      async updatePage({url, value}){
+        this.isLoading = true
+        this.$router.push({path: this.$route.path, query: {page: url[url.length-1], search: this.$route.query.search}}).catch(err => {})
+        let planets = await this.$api.get(url)
+        this.planets = planets.results
+        this.totalPlanets = planets.count
+        this.apiUrl = planets.url
+        this.currentPage = value
+        this.isLoading = false
+      }
     },
     watchQuery: true,
+    scrollToTop: false,
     watch: {
       searchTerm(val){
         this.isLoading = true
-        this.$router.push({path: this.$route.path, query: {search: val}})
+        this.$router.push({path: this.$route.path, query: {page: 1, search: val}})
         this.debouncedData(val)
       }
     }
