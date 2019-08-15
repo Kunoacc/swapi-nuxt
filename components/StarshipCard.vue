@@ -1,6 +1,6 @@
 <template>
   <base-card :is-carousel="isCarousel">
-    <nuxt-link :to="`starships/${starship.name.toLowerCase().replace(/ /g, '-')}`">
+    <nuxt-link :to="{name: 'starships-name', params: {name: starship.name.toLowerCase().replace(/ /g, '-')}}">
       <div :id="`card-${rand}`"
         class="shadow-md rounded relative bg-white overflow-hidden flex flex-col card hover:shadow-xl">
         <div class="w-1/2 mx-auto pt-8">
